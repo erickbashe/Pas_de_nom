@@ -26,10 +26,11 @@ object erick1 {
     .option("password", "")//
     .load()
     val df1 = df.count()
+    // excuse me
     val df2 = df.columns
     println(df1, df2.size)
 
-    df.write.format("csv").mode("overwrite").save("D:\\proj2\\output")
+    df.write.format("parquet").mode("overwrite").save("D:\\proj2\\output")
 
     df.show()
   }

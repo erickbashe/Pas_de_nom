@@ -30,7 +30,7 @@ object erick1 {
     val df2 = df.columns
     println(df1, df2.size)
 
-    df.write.format("parquet").mode("overwrite").save("D:\\proj2\\output")
+    df.write.format("orc").mode("overwrite").save("D:\\proj2\\output")
 
     df.show()
   }

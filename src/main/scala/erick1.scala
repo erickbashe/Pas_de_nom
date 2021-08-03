@@ -31,6 +31,7 @@ object erick1 {
     println(df1, df2.size)
 
     df.write.format("orc").mode("update").save("D:\\proj2\\output")
+    df.error
 
     df.show()
   }

@@ -27,6 +27,7 @@ object erick1 {
     .load()
     val df1 = df.count()
     // excuse me
+    //yes baby
     val df2 = df.columns
     println(df1, df2.size)
 

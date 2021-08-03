@@ -30,8 +30,10 @@ object erick1 {
     val df2 = df.columns
     println(df1, df2.size)
 
-    df.write.format("orc").mode("update").save("D:\\proj2\\output")
-    df.error
+    val df3 = df.repartition (1)
+
+    df3.write.format("orc").mode("update").save("D:\\proj2\\output")
+
 
     df.show()
   }

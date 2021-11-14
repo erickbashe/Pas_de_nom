@@ -1,5 +1,6 @@
 package exceptionpack
 import com.typesafe.config.{Config, ConfigFactory}
+import org.apache.hadoop.io.{NullWritable, Text}
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.log4j.{Level, LogManager, Logger}
 import org.apache.spark.sql.functions._
@@ -67,14 +68,29 @@ object Incremental {
     )
     val orderUpdatesDF = createDF(orderUpdates, schema)
     orderUpdatesDF.show()
-    //orderUpdatesDF.except(ordersDF).orderBy("order_no").select ("order_no", "quantity", "cost").show()
-    // Register temporary views
-    ordersDF.createOrReplaceTempView("orders")
-    orderUpdatesDF.createOrReplaceTempView("order_updates")
+    orderUpdatesDF.except(ordersDF).orderBy("order_no")
+      .select ("order_no", "quantity", "cost")
+      .show()
+/*
+val normalFile = sc.textFile ("D:\\proj2\\src\\main\\scala\\exceptionpack") // Use a serialised key to serialized data
+    normalFile.map (x =>(NullWritable.get(), x)) //Here we have K,V pair that we can save. Serialized keys: nullwritable, intwritable as per value to serialize
+  .saveAsSequenceFile("D:\\proj2\\src\\main\\scala1") // save the writable object as sequence file --> key is nullwritable, value is given row  x
 
-    val reconciled = orderUpdatesDF.union(ordersDF).dropDuplicates (Seq ("order_no", "customer_id"))
+    //Read serialzed files generated in folder scala1
+    //seqFiles take 3 ard: path, key and value
+    sc.sequenceFile("D:\\proj2\\src\\main\\scala1",
+      classOf[NullWritable], classOf[Text])
+      .map (r => r.toString()) //make it a string to make it readable
+      .collect().foreach(println)
+*/
+    // Register temporary views
+
+    /*ordersDF.createOrReplaceTempView("orders")
+    orderUpdatesDF.createOrReplaceTempView("order_updates")*/
+
+    /*val reconciled = orderUpdatesDF.union(ordersDF).dropDuplicates (Seq ("order_no", "customer_id"))
       .orderBy("order_no")
-    reconciled.show()
+    reconciled.show()*/
 
   }
 }

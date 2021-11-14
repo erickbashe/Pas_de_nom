@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage ('Build or compile stage') {
+            steps {
+                git credentialsId: 'f9297723-9cdc-46c7-8e9f-2165273fe749', url: 'https://github.com/erickbashe/dimancheamazon.git'
+                bat 'sbt compile'
+            }
+        }
+        stage ('Test stage') {
+             steps {
+                 bat 'sbt test'
+             }
+             post {
+                   always{
+                        junit '*.xml'
+                   }
+             }
+        }
+        stage ('Package stage') {
+               steps {
+                    bat 'sbt package'
+                    archiveArcifacts '*.jar'
+               }
+        }
+    }
+}

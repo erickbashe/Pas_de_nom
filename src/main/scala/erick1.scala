@@ -47,10 +47,15 @@ object erick1 extends App {
     .load()
   //df_orders.show(5)
 
+
   val df1 = df_cust.count()
   // excuse me
   val df2 = df_cust.columns
   println(df1, df2.size)
+
+    //df.write.format("orc").mode("update").save("D:\\proj2\\output")
+    //df2.write.format("csv").mode("overwrite").save("D:\\proj2\\output1")
+
 
   //val df3 = df_cust.repartition (1)
   //df.write.format("delta").mode("update").save("D:\\proj2\\output")
@@ -105,10 +110,12 @@ object erick1 extends App {
     .option("password", "") //
     .load()
   //df_pr.show(5)
+  println ("***Rollup table***")
   val df_prod1 = df_ord_det.rollup("orderid", "productid").agg(sum($"quantity").alias("qtty"))
   df_prod1.orderBy($"orderid", $"productid".desc_nulls_last).show()
 
   //Collect_set
+  println ("***Collect set table***")
   val df_collect_set = df_joined_1.groupBy("contactname")
     .agg(collect_set("orderid").alias("list_orders"))
 
@@ -122,6 +129,7 @@ object erick1 extends App {
   df_finals.show(5)
   df_finals.printSchema()
 // Unable to write results of collect_set. It says Array issue
+
   /*df_finals.write.format("jdbc")
     .options(Map("url"->"jdbc:mysql://localhost:3306/gkc",
   "driver"->"com.mysql.jdbc.Driver",

@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage ('Build or compile stage') {
             steps {
-                git credentialsId: 'f9297723-9cdc-46c7-8e9f-2165273fe749', url: 'https://github.com/erickbashe/dimancheamazon.git'
+                git branch: 'devel_br', credentialsId: 'erickbashe', url: 'https://github.com/erickbashe/dimancheamazon.git'
                 bat 'sbt compile'
             }
         }
